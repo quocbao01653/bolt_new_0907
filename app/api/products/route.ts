@@ -10,6 +10,7 @@ export async function GET(request: NextRequest) {
     const search = searchParams.get('search');
     const sortBy = searchParams.get('sortBy') || 'createdAt';
     const sortOrder = searchParams.get('sortOrder') || 'desc';
+    const featured = searchParams.get('featured');
     const minPrice = searchParams.get('minPrice');
     const maxPrice = searchParams.get('maxPrice');
 
@@ -24,6 +25,10 @@ export async function GET(request: NextRequest) {
       where.category = {
         slug: category,
       };
+    }
+
+    if (featured === 'true') {
+      where.featured = true;
     }
 
     if (search) {

@@ -59,7 +59,7 @@ export default function ProductGrid({ products, loading, viewMode }: ProductGrid
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          productId: productId,
+          productId,
           quantity: 1,
         }),
       });

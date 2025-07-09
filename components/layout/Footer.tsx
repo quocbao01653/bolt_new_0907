@@ -75,12 +75,12 @@ export default function Footer() {
           <div>
             <h4 className="text-white font-semibold mb-4">Categories</h4>
             <ul className="space-y-3">
-              <li><Link href="/electronics" className="hover:text-white transition-colors">Electronics</Link></li>
-              <li><Link href="/fashion" className="hover:text-white transition-colors">Fashion</Link></li>
-              <li><Link href="/home" className="hover:text-white transition-colors">Home & Garden</Link></li>
-              <li><Link href="/sports" className="hover:text-white transition-colors">Sports</Link></li>
-              <li><Link href="/books" className="hover:text-white transition-colors">Books</Link></li>
-              <li><Link href="/deals" className="hover:text-white transition-colors">Special Deals</Link></li>
+              <li><Link href="/products?category=electronics" className="hover:text-white transition-colors">Electronics</Link></li>
+              <li><Link href="/products?category=fashion" className="hover:text-white transition-colors">Fashion</Link></li>
+              <li><Link href="/products?category=home" className="hover:text-white transition-colors">Home & Garden</Link></li>
+              <li><Link href="/products?category=sports" className="hover:text-white transition-colors">Sports</Link></li>
+              <li><Link href="/products?category=books" className="hover:text-white transition-colors">Books</Link></li>
+              <li><Link href="/products" className="hover:text-white transition-colors">All Products</Link></li>
             </ul>
           </div>
 

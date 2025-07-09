@@ -132,7 +132,7 @@ export default function Header() {
 
         {/* Navigation - Desktop */}
         <nav className="hidden md:flex items-center space-x-8 py-4 border-t">
-          <Link href="/categories" className="text-foreground hover:text-blue-500 font-medium transition-colors">
+          <Link href="/products" className="text-foreground hover:text-blue-500 font-medium transition-colors">
             All Categories
           </Link>
           <Link href="/electronics" className="text-muted-foreground hover:text-foreground transition-colors">
@@ -168,7 +168,7 @@ export default function Header() {
             
             {/* Mobile navigation */}
             <nav className="space-y-2">
-              <Link href="/categories" className="block py-2 text-foreground font-medium">
+              <Link href="/products" className="block py-2 text-foreground font-medium">
                 All Categories
               </Link>
               <Link href="/electronics" className="block py-2 text-muted-foreground">

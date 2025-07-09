@@ -1,65 +1,84 @@
+'use client';
+
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Smartphone, Shirt, Home, Dumbbell, Book, Zap } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 
-const categories = [
-  {
-    id: 1,
-    name: "Electronics",
-    description: "Latest gadgets & tech",
-    icon: Smartphone,
-    image: "https://images.pexels.com/photos/356056/pexels-photo-356056.jpeg?auto=compress&cs=tinysrgb&w=400",
-    href: "/electronics",
-    color: "bg-blue-500"
-  },
-  {
-    id: 2,
-    name: "Fashion",
-    description: "Trendy clothing & accessories",
-    icon: Shirt,
-    image: "https://images.pexels.com/photos/1464625/pexels-photo-1464625.jpeg?auto=compress&cs=tinysrgb&w=400",
-    href: "/fashion",
-    color: "bg-pink-500"
-  },
-  {
-    id: 3,
-    name: "Home & Garden",
-    description: "Furniture & decor",
-    icon: Home,
-    image: "https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=400",
-    href: "/home",
-    color: "bg-green-500"
-  },
-  {
-    id: 4,
-    name: "Sports & Fitness",
-    description: "Equipment & activewear",
-    icon: Dumbbell,
-    image: "https://images.pexels.com/photos/841130/pexels-photo-841130.jpeg?auto=compress&cs=tinysrgb&w=400",
-    href: "/sports",
-    color: "bg-orange-500"
-  },
-  {
-    id: 5,
-    name: "Books",
-    description: "Knowledge & entertainment",
-    icon: Book,
-    image: "https://images.pexels.com/photos/1370298/pexels-photo-1370298.jpeg?auto=compress&cs=tinysrgb&w=400",
-    href: "/books",
-    color: "bg-purple-500"
-  },
-  {
-    id: 6,
-    name: "Special Deals",
-    description: "Limited time offers",
-    icon: Zap,
-    image: "https://images.pexels.com/photos/264547/pexels-photo-264547.jpeg?auto=compress&cs=tinysrgb&w=400",
-    href: "/deals",
-    color: "bg-red-500"
-  }
-];
+interface Category {
+  id: string;
+  name: string;
+  slug: string;
+  description?: string;
+  image?: string;
+  _count: {
+    products: number;
+  };
+}
+
+const categoryIcons: Record<string, any> = {
+  'electronics': Smartphone,
+  'fashion': Shirt,
+  'home': Home,
+  'sports': Dumbbell,
+  'books': Book,
+  'deals': Zap,
+};
+
+const categoryColors: Record<string, string> = {
+  'electronics': 'bg-blue-500',
+  'fashion': 'bg-pink-500',
+  'home': 'bg-green-500',
+  'sports': 'bg-orange-500',
+  'books': 'bg-purple-500',
+  'deals': 'bg-red-500',
+};
 
 export default function CategoriesGrid() {
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
+  const fetchCategories = async () => {
+    try {
+      const response = await fetch('/api/categories');
+      const data = await response.json();
+      setCategories(data);
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <section className="py-16 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              Shop by Category
+            </h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              Explore our wide range of categories to find exactly what you're looking for
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <Card key={i} className="overflow-hidden animate-pulse h-48">
+                <div className="h-full bg-gray-200" />
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section className="py-16 bg-white">
       <div className="container mx-auto px-4">
@@ -72,37 +91,51 @@ export default function CategoriesGrid() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {categories.map((category) => (
-            <Link key={category.id} href={category.href}>
-              <Card className="group overflow-hidden border-0 shadow-sm hover:shadow-xl transition-all duration-300 h-full bg-white">
-                <div className="relative overflow-hidden h-48">
-                  <img
-                    src={category.image}
-                    alt={category.name}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
-                  
-                  {/* Icon */}
-                  <div className={`absolute top-4 left-4 w-12 h-12 ${category.color} rounded-lg flex items-center justify-center shadow-lg`}>
-                    <category.icon className="w-6 h-6 text-white" />
-                  </div>
+        {categories.length === 0 ? (
+          <div className="text-center py-12">
+            <p className="text-gray-500">No categories available at the moment.</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {categories.map((category) => {
+              const IconComponent = categoryIcons[category.slug] || Smartphone;
+              const colorClass = categoryColors[category.slug] || 'bg-gray-500';
+              
+              return (
+                <Link key={category.id} href={`/${category.slug}`}>
+                  <Card className="group overflow-hidden border-0 shadow-sm hover:shadow-xl transition-all duration-300 h-full bg-white">
+                    <div className="relative overflow-hidden h-48">
+                      <img
+                        src={category.image || 'https://images.pexels.com/photos/264547/pexels-photo-264547.jpeg?auto=compress&cs=tinysrgb&w=400'}
+                        alt={category.name}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+                      
+                      {/* Icon */}
+                      <div className={`absolute top-4 left-4 w-12 h-12 ${colorClass} rounded-lg flex items-center justify-center shadow-lg`}>
+                        <IconComponent className="w-6 h-6 text-white" />
+                      </div>
 
-                  {/* Content overlay */}
-                  <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-                    <h3 className="text-xl font-bold mb-1 group-hover:text-blue-300 transition-colors">
-                      {category.name}
-                    </h3>
-                    <p className="text-gray-200 text-sm">
-                      {category.description}
-                    </p>
-                  </div>
-                </div>
-              </Card>
-            </Link>
-          ))}
-        </div>
+                      {/* Content overlay */}
+                      <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
+                        <h3 className="text-xl font-bold mb-1 group-hover:text-blue-300 transition-colors">
+                          {category.name}
+                        </h3>
+                        <p className="text-gray-200 text-sm">
+                          {category.description || `Explore ${category.name.toLowerCase()}`}
+                        </p>
+                        <p className="text-gray-300 text-xs mt-1">
+                          {category._count.products} products
+                        </p>
+                      </div>
+                    </div>
+                  </Card>
+                </Link>
+              );
+            })}
+          </div>
+        )}
 
         {/* Special promotion banner */}
         <div className="mt-16 bg-gradient-to-r from-blue-600 to-blue-700 rounded-2xl p-8 md:p-12 text-center text-white">
