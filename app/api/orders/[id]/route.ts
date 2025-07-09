@@ -3,7 +3,10 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 
-export async function GET() {
+export async function GET(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
   try {
     const session = await getServerSession(authOptions);
     
@@ -14,14 +17,27 @@ export async function GET() {
       );
     }
 
-    const orders = await prisma.order.findMany({
+    const { id } = await params;
+
+    // If ID is provided, fetch single order
+    const order = await prisma.order.findUnique({
       where: {
+        id,
         userId: session.user.id,
       },
       include: {
         orderItems: {
           include: {
-            product: true,
+            product: {
+              select: {
+                id: true,
+                name: true,
+                images: true,
+                price: true,
+                comparePrice: true,
+                slug: true,
+              },
+            },
           },
         },
       },
@@ -30,8 +46,15 @@ export async function GET() {
       },
     });
 
+    if (!order) {
+      return NextResponse.json(
+        { error: 'Order not found' },
+        { status: 404 }
+      );
+    }
+
     // Convert Decimal fields to numbers for JSON serialization
-    const serializedOrders = orders.map(order => ({
+    const serializedOrder = {
       ...order,
       total: Number(order.total),
       subtotal: Number(order.subtotal),
@@ -46,9 +69,9 @@ export async function GET() {
           comparePrice: item.product.comparePrice ? Number(item.product.comparePrice) : null,
         }
       }))
-    }));
+    };
 
-    return NextResponse.json(serializedOrders);
+    return NextResponse.json(serializedOrder);
   } catch (error) {
     console.error('Error fetching orders:', error);
     return NextResponse.json(

@@ -14,6 +14,7 @@ export async function GET() {
       );
     }
 
+    // Fetch all orders for the user
     const orders = await prisma.order.findMany({
       where: {
         userId: session.user.id,
@@ -21,7 +22,16 @@ export async function GET() {
       include: {
         orderItems: {
           include: {
-            product: true,
+            product: {
+              select: {
+                id: true,
+                name: true,
+                images: true,
+                price: true,
+                comparePrice: true,
+                slug: true,
+              },
+            },
           },
         },
       },

@@ -52,10 +52,11 @@ export default function OrderConfirmationPage() {
     try {
       const response = await fetch(`/api/orders/${orderId}`);
       if (response.ok) {
-        const orderData = await response.json();
-        setOrder(orderData);
+        const data = await response.json();
+        setOrder(data);
       } else {
-        setError('Order not found');
+        const errorData = await response.json();
+        setError(errorData.error || 'Order not found');
       }
     } catch (error) {
       console.error('Error fetching order:', error);
@@ -158,10 +159,10 @@ export default function OrderConfirmationPage() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {order.orderItems.map((item) => (
+                  {order.orderItems && order.orderItems.length > 0 ? order.orderItems.map((item) => (
                     <div key={item.id} className="flex items-center space-x-4">
                       <img
-                        src={item.product.images[0] || '/placeholder-product.jpg'}
+                        src={item.product?.images?.[0] || '/placeholder-product.jpg'}
                         alt={item.product.name}
                         className="w-16 h-16 object-cover rounded border"
                       />
@@ -182,7 +183,9 @@ export default function OrderConfirmationPage() {
                         </p>
                       </div>
                     </div>
-                  ))}
+                  )) : (
+                    <p className="text-gray-500">No items found in this order.</p>
+                  )}
                 </div>
               </CardContent>
             </Card>
