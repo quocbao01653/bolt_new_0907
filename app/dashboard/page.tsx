@@ -17,7 +17,8 @@ import {
   Eye,
   ShoppingBag,
   Calendar,
-  DollarSign
+  DollarSign,
+  X
 } from 'lucide-react';
 
 interface Order {
@@ -176,7 +177,15 @@ export default function CustomerDashboard() {
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
             Welcome back, {session.user?.name?.split(' ')[0]}!
           </h1>
-          <p className="text-gray-600">Track your orders and manage your account</p>
+          <div className="flex items-center justify-between">
+            <p className="text-gray-600">Track your orders and manage your account</p>
+            <Link href="/">
+              <Button variant="outline" className="flex items-center space-x-2">
+                <ShoppingBag className="w-4 h-4" />
+                <span>Continue Shopping</span>
+              </Button>
+            </Link>
+          </div>
         </div>
 
         {/* Stats Cards */}

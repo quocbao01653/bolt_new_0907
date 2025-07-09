@@ -41,17 +41,23 @@ services:
     networks:
       - ecommerce_network
 
-  # Adminer for database management (optional)
-  adminer:
-    image: adminer:latest
-    container_name: ecommerce_adminer
+  # Next.js App
+  web:
+    build: .
+    container_name: ecommerce_web
     restart: unless-stopped
+    environment:
+      DATABASE_URL: postgres://postgres:password123@postgres:5432/ecommerce
+      REDIS_URL: redis://redis:6379
+      NODE_ENV: development
     ports:
-      - "8080:8080"
-    networks:
-      - ecommerce_network
+      - "3000:3000"
     depends_on:
       - postgres
+      - redis
+    networks:
+      - ecommerce_network
+    command: sh -c "npx prisma migrate deploy && npx prisma generate && npm run db:seed && npm run dev"
 
 volumes:
   postgres_data:

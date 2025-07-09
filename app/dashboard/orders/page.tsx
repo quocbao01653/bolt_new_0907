@@ -20,7 +20,8 @@ import {
   ArrowLeft,
   Calendar,
   Filter,
-  X
+  X,
+  ShoppingBag
 } from 'lucide-react';
 
 interface Order {
@@ -191,10 +192,18 @@ export default function CustomerOrdersPage() {
           <Link href="/dashboard">
             <Button variant="ghost" size="sm">
               <ArrowLeft className="w-4 h-4 mr-2" />
-              Back to Dashboard
+              Back to Order History
             </Button>
           </Link>
-          <h1 className="text-3xl font-bold text-gray-900">Order History</h1>
+          <div className="flex-1">
+            <h1 className="text-3xl font-bold text-gray-900">Order History</h1>
+          </div>
+          <Link href="/">
+            <Button className="bg-blue-600 hover:bg-blue-700">
+              <ShoppingBag className="w-4 h-4 mr-2" />
+              Continue Shopping
+            </Button>
+          </Link>
         </div>
 
         {/* Filters */}

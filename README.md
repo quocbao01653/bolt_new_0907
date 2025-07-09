@@ -2,6 +2,23 @@
 
 A modern, production-ready e-commerce application built with Next.js 13+, TypeScript, Prisma, and PostgreSQL, fully containerized with Docker.
 
+## 🚀 Quick Start with Docker Compose
+
+To start the entire project (app, database, Redis, MailHog) with one command:
+
+```sh
+docker-compose up --build
+```
+
+- The app will be available at http://localhost:3000
+- PostgreSQL at localhost:5432 (user: postgres, password: password123)
+- Redis at localhost:6379
+- MailHog at http://localhost:8025
+
+This will automatically run database migrations and seed the database with demo data.
+
+---
+
 ## 🚀 Features
 
 ### Customer Features

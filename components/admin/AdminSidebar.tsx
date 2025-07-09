@@ -14,6 +14,7 @@ import {
   Menu,
   X,
   ShoppingBag,
+  Lock,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
@@ -22,8 +23,11 @@ const navigation = [
   { name: 'Products', href: '/admin/products', icon: Package },
   { name: 'Orders', href: '/admin/orders', icon: ShoppingCart },
   { name: 'Customers', href: '/admin/customers', icon: Users },
-  { name: 'Analytics', href: '/admin/analytics', icon: BarChart3 },
-  { name: 'Settings', href: '/admin/settings', icon: Settings },
+];
+
+const disabledNavigation = [
+  { name: 'Analytics', icon: BarChart3, comingSoon: true },
+  { name: 'Settings', icon: Settings, comingSoon: true },
 ];
 
 export default function AdminSidebar() {
@@ -76,6 +80,19 @@ export default function AdminSidebar() {
                 {item.name}
               </Link>
             ))}
+            
+            {/* Disabled menu items */}
+            {disabledNavigation.map((item) => (
+              <div
+                key={item.name}
+                className="group flex items-center px-2 py-2 text-sm font-medium rounded-md text-gray-400 cursor-not-allowed opacity-60"
+                title="Coming soon"
+              >
+                <item.icon className="mr-3 h-5 w-5 flex-shrink-0 text-gray-300" />
+                <span className="flex-1">{item.name}</span>
+                <Lock className="h-4 w-4 text-gray-300" />
+              </div>
+            ))}
           </nav>
         </div>
       </div>
@@ -111,6 +128,19 @@ export default function AdminSidebar() {
                 />
                 {item.name}
               </Link>
+            ))}
+            
+            {/* Disabled menu items */}
+            {disabledNavigation.map((item) => (
+              <div
+                key={item.name}
+                className="group flex items-center px-2 py-2 text-sm font-medium rounded-md text-gray-400 cursor-not-allowed opacity-60"
+                title="Coming soon"
+              >
+                <item.icon className="mr-3 h-5 w-5 flex-shrink-0 text-gray-300" />
+                <span className="flex-1">{item.name}</span>
+                <Lock className="h-4 w-4 text-gray-300" />
+              </div>
             ))}
           </nav>
         </div>
