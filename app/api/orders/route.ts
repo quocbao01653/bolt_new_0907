@@ -160,7 +160,16 @@ export async function POST(request: NextRequest) {
         include: {
           orderItems: {
             include: {
-              product: true,
+              product: {
+                select: {
+                  id: true,
+                  name: true,
+                  images: true,
+                  price: true,
+                  comparePrice: true,
+                  slug: true,
+                },
+              },
             },
           },
         },
