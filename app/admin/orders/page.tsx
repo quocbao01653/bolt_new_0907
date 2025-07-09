@@ -204,7 +204,7 @@ export default function AdminOrdersPage() {
                       <div className="text-sm text-gray-500">{order.user.email}</div>
                     </div>
                   </TableCell>
-                  <TableCell>${order.total.toFixed(2)}</TableCell>
+                  <TableCell>${Number(order.total).toFixed(2)}</TableCell>
                   <TableCell>
                     <Badge className={getStatusColor(order.status)}>
                       {order.status}
@@ -263,7 +263,7 @@ export default function AdminOrdersPage() {
                   <h3 className="font-semibold mb-2">Order Information</h3>
                   <p><strong>Order Number:</strong> {selectedOrder.orderNumber}</p>
                   <p><strong>Date:</strong> {new Date(selectedOrder.createdAt).toLocaleDateString()}</p>
-                  <p><strong>Total:</strong> ${selectedOrder.total.toFixed(2)}</p>
+                  <p><strong>Total:</strong> ${Number(selectedOrder.total).toFixed(2)}</p>
                 </div>
               </div>
 
@@ -307,7 +307,7 @@ export default function AdminOrdersPage() {
                       </div>
                       <div className="text-right">
                         <p className="font-semibold">
-                          ${(item.quantity * item.price).toFixed(2)}
+                          ${(item.quantity * Number(item.price)).toFixed(2)}
                         </p>
                       </div>
                     </div>

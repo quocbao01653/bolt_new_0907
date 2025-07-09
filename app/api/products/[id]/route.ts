@@ -47,6 +47,8 @@ export async function GET(
 
     const productWithRating = {
       ...product,
+      price: Number(product.price),
+      comparePrice: product.comparePrice ? Number(product.comparePrice) : null,
       averageRating: Math.round(averageRating * 10) / 10,
       reviewCount: ratings.length,
     };

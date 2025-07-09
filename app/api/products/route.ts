@@ -74,6 +74,8 @@ export async function GET(request: NextRequest) {
       
       return {
         ...product,
+        price: Number(product.price),
+        comparePrice: product.comparePrice ? Number(product.comparePrice) : null,
         averageRating: Math.round(averageRating * 10) / 10,
         reviewCount: ratings.length,
         reviews: undefined, // Remove reviews from response

@@ -174,11 +174,11 @@ export default function OrderConfirmationPage() {
                         </p>
                       </div>
                       <div className="text-right">
-                        <p className="font-semibold">
+                        <p className="font-semibold">${(Number(item.price) * item.quantity).toFixed(2)}</p>
                           ${(item.price * item.quantity).toFixed(2)}
                         </p>
                         <p className="text-sm text-gray-600">
-                          ${item.price} each
+                          ${Number(item.price).toFixed(2)} each
                         </p>
                       </div>
                     </div>
@@ -223,20 +223,20 @@ export default function OrderConfirmationPage() {
               <CardContent className="space-y-3">
                 <div className="flex justify-between text-sm">
                   <span>Subtotal</span>
-                  <span>${order.subtotal.toFixed(2)}</span>
+                  <span>${Number(order.subtotal).toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span>Shipping</span>
-                  <span>${order.shipping.toFixed(2)}</span>
+                  <span>${Number(order.shipping).toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span>Tax</span>
-                  <span>${order.tax.toFixed(2)}</span>
+                  <span>${Number(order.tax).toFixed(2)}</span>
                 </div>
                 <Separator />
                 <div className="flex justify-between font-semibold">
                   <span>Total</span>
-                  <span>${order.total.toFixed(2)}</span>
+                  <span>${Number(order.total).toFixed(2)}</span>
                 </div>
               </CardContent>
             </Card>

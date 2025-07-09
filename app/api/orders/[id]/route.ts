@@ -30,7 +30,25 @@ export async function GET() {
       },
     });
 
-    return NextResponse.json(orders);
+    // Convert Decimal fields to numbers for JSON serialization
+    const serializedOrders = orders.map(order => ({
+      ...order,
+      total: Number(order.total),
+      subtotal: Number(order.subtotal),
+      tax: Number(order.tax),
+      shipping: Number(order.shipping),
+      orderItems: order.orderItems.map(item => ({
+        ...item,
+        price: Number(item.price),
+        product: {
+          ...item.product,
+          price: Number(item.product.price),
+          comparePrice: item.product.comparePrice ? Number(item.product.comparePrice) : null,
+        }
+      }))
+    }));
+
+    return NextResponse.json(serializedOrders);
   } catch (error) {
     console.error('Error fetching orders:', error);
     return NextResponse.json(
