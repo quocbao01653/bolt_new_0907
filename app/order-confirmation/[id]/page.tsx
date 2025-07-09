@@ -174,8 +174,8 @@ export default function OrderConfirmationPage() {
                         </p>
                       </div>
                       <div className="text-right">
-                        <p className="font-semibold">${(Number(item.price) * item.quantity).toFixed(2)}</p>
-                          ${(item.price * item.quantity).toFixed(2)}
+                        <p className="font-semibold">
+                          ${(Number(item.price) * item.quantity).toFixed(2)}
                         </p>
                         <p className="text-sm text-gray-600">
                           ${Number(item.price).toFixed(2)} each
