@@ -52,10 +52,11 @@ export default function OrderConfirmationPage() {
     try {
       const response = await fetch(`/api/orders/${orderId}`);
       if (response.ok) {
-        const orderData = await response.json();
-        setOrder(orderData);
+        const data = await response.json();
+        setOrder(data);
       } else {
-        setError('Order not found');
+        const errorData = await response.json();
+        setError(errorData.error || 'Order not found');
       }
     } catch (error) {
       console.error('Error fetching order:', error);
@@ -158,10 +159,10 @@ export default function OrderConfirmationPage() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {order.orderItems.map((item) => (
+                  {order.orderItems && order.orderItems.length > 0 ? order.orderItems.map((item) => (
                     <div key={item.id} className="flex items-center space-x-4">
                       <img
-                        src={item.product.images[0] || '/placeholder-product.jpg'}
+                        src={item.product?.images?.[0] || '/placeholder-product.jpg'}
                         alt={item.product.name}
                         className="w-16 h-16 object-cover rounded border"
                       />
@@ -175,14 +176,16 @@ export default function OrderConfirmationPage() {
                       </div>
                       <div className="text-right">
                         <p className="font-semibold">
-                          ${(item.price * item.quantity).toFixed(2)}
+                          ${(Number(item.price) * item.quantity).toFixed(2)}
                         </p>
                         <p className="text-sm text-gray-600">
-                          ${item.price} each
+                          ${Number(item.price).toFixed(2)} each
                         </p>
                       </div>
                     </div>
-                  ))}
+                  )) : (
+                    <p className="text-gray-500">No items found in this order.</p>
+                  )}
                 </div>
               </CardContent>
             </Card>
@@ -223,20 +226,20 @@ export default function OrderConfirmationPage() {
               <CardContent className="space-y-3">
                 <div className="flex justify-between text-sm">
                   <span>Subtotal</span>
-                  <span>${order.subtotal.toFixed(2)}</span>
+                  <span>${Number(order.subtotal).toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span>Shipping</span>
-                  <span>${order.shipping.toFixed(2)}</span>
+                  <span>${Number(order.shipping).toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span>Tax</span>
-                  <span>${order.tax.toFixed(2)}</span>
+                  <span>${Number(order.tax).toFixed(2)}</span>
                 </div>
                 <Separator />
                 <div className="flex justify-between font-semibold">
                   <span>Total</span>
-                  <span>${order.total.toFixed(2)}</span>
+                  <span>${Number(order.total).toFixed(2)}</span>
                 </div>
               </CardContent>
             </Card>

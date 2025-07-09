@@ -28,11 +28,21 @@ export async function GET() {
     });
 
     const total = cartItems.reduce((sum, item) => {
-      return sum + (parseFloat(item.product.price.toString()) * item.quantity);
+      return sum + (Number(item.product.price) * item.quantity);
     }, 0);
 
+    // Convert Decimal fields to numbers for JSON serialization
+    const serializedCartItems = cartItems.map(item => ({
+      ...item,
+      product: {
+        ...item.product,
+        price: Number(item.product.price),
+        comparePrice: item.product.comparePrice ? Number(item.product.comparePrice) : null,
+      }
+    }));
+
     return NextResponse.json({
-      items: cartItems,
+      items: serializedCartItems,
       total: Math.round(total * 100) / 100,
       count: cartItems.reduce((sum, item) => sum + item.quantity, 0),
     });
