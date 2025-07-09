@@ -98,6 +98,11 @@ export default function Header() {
             ) : session ? (
               <div className="hidden md:flex items-center space-x-2">
                 <span className="text-sm text-gray-600">Hi, {session.user?.name?.split(' ')[0]}</span>
+                <Link href="/dashboard">
+                  <Button variant="ghost" size="sm" className="text-sm">
+                    Dashboard
+                  </Button>
+                </Link>
                 <Button
                   variant="ghost"
                   size="sm"
@@ -216,7 +221,7 @@ export default function Header() {
                 {session && (
                   <Link href="/dashboard" className="block py-2 text-muted-foreground">
                     My Account
-                  </Link>
+                  Dashboard
                 )}
               </div>
             </nav>
