@@ -82,6 +82,14 @@ async function main() {
 
   console.log('📂 Created categories:', createdCategories.length);
 
+  // Get category IDs safely
+  const electronicsCategory = createdCategories.find(c => c.slug === 'electronics');
+  const homeCategory = createdCategories.find(c => c.slug === 'home');
+  
+  if (!electronicsCategory || !homeCategory) {
+    throw new Error('Required categories not found');
+  }
+
   // Create sample products
   const products = [
     {
@@ -95,7 +103,7 @@ async function main() {
       images: [
         'https://images.pexels.com/photos/3394650/pexels-photo-3394650.jpeg?auto=compress&cs=tinysrgb&w=400',
       ],
-      categoryId: createdCategories.find(c => c.slug === 'electronics')?.id,
+      categoryId: electronicsCategory.id,
       featured: true,
     },
     {
@@ -109,7 +117,7 @@ async function main() {
       images: [
         'https://images.pexels.com/photos/1772123/pexels-photo-1772123.jpeg?auto=compress&cs=tinysrgb&w=400',
       ],
-      categoryId: createdCategories.find(c => c.slug === 'electronics')?.id,
+      categoryId: electronicsCategory.id,
       featured: true,
     },
     {
@@ -122,7 +130,7 @@ async function main() {
       images: [
         'https://images.pexels.com/photos/4226769/pexels-photo-4226769.jpeg?auto=compress&cs=tinysrgb&w=400',
       ],
-      categoryId: createdCategories.find(c => c.slug === 'home')?.id,
+      categoryId: homeCategory.id,
       featured: false,
     },
     {
@@ -134,9 +142,9 @@ async function main() {
       sku: 'EOC-001',
       stock: 15,
       images: [
-        'https://images.pexels.com/photos/586960/pexels-photo-586960.jpeg?auto=compress&cs=tinysrgb&w=400',
+        'https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=400',
       ],
-      categoryId: createdCategories.find(c => c.slug === 'home')?.id,
+      categoryId: homeCategory.id,
       featured: false,
     },
   ];
