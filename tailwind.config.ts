@@ -1,7 +1,7 @@
 import type { Config } from 'tailwindcss';
 
 const config: Config = {
-  darkMode: ['class'],
+  darkMode: 'class',
   content: [
     './pages/**/*.{js,ts,jsx,tsx,mdx}',
     './components/**/*.{js,ts,jsx,tsx,mdx}',
@@ -13,6 +13,54 @@ const config: Config = {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic':
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+      },
+      animation: {
+        'accordion-down': 'accordion-down 0.2s ease-out',
+        'accordion-up': 'accordion-up 0.2s ease-out',
+        'fade-in': 'fadeIn 0.5s ease-in-out',
+        'slide-in': 'slideIn 0.3s ease-out',
+        'bounce-gentle': 'bounce-gentle 2s ease-in-out infinite',
+        'pulse-glow': 'pulse-glow 2s ease-in-out infinite',
+        'wiggle': 'wiggle 1s ease-in-out',
+        'float': 'float 6s ease-in-out infinite',
+        'shimmer': 'shimmer 1.5s infinite',
+      },
+      keyframes: {
+        fadeIn: {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        },
+        slideIn: {
+          '0%': { transform: 'translateX(-100%)' },
+          '100%': { transform: 'translateX(0)' },
+        },
+        'bounce-gentle': {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-5px)' },
+        },
+        'pulse-glow': {
+          '0%, 100%': { boxShadow: '0 0 5px rgba(59, 130, 246, 0.5)' },
+          '50%': { boxShadow: '0 0 20px rgba(59, 130, 246, 0.8)' },
+        },
+        wiggle: {
+          '0%, 7%': { transform: 'rotateZ(0)' },
+          '15%': { transform: 'rotateZ(-15deg)' },
+          '20%': { transform: 'rotateZ(10deg)' },
+          '25%': { transform: 'rotateZ(-10deg)' },
+          '30%': { transform: 'rotateZ(6deg)' },
+          '35%': { transform: 'rotateZ(-4deg)' },
+          '40%, 100%': { transform: 'rotateZ(0)' },
+        },
+        float: {
+          '0%, 100%': { transform: 'translateY(0px) rotate(0deg)' },
+          '25%': { transform: 'translateY(-10px) rotate(1deg)' },
+          '50%': { transform: 'translateY(-20px) rotate(0deg)' },
+          '75%': { transform: 'translateY(-10px) rotate(-1deg)' },
+        },
+        shimmer: {
+          '0%': { backgroundPosition: '-200% 0' },
+          '100%': { backgroundPosition: '200% 0' },
+        },
       },
       borderRadius: {
         lg: 'var(--radius)',
@@ -60,28 +108,6 @@ const config: Config = {
           '4': 'hsl(var(--chart-4))',
           '5': 'hsl(var(--chart-5))',
         },
-      },
-      keyframes: {
-        'accordion-down': {
-          from: {
-            height: '0',
-          },
-          to: {
-            height: 'var(--radix-accordion-content-height)',
-          },
-        },
-        'accordion-up': {
-          from: {
-            height: 'var(--radix-accordion-content-height)',
-          },
-          to: {
-            height: '0',
-          },
-        },
-      },
-      animation: {
-        'accordion-down': 'accordion-down 0.2s ease-out',
-        'accordion-up': 'accordion-up 0.2s ease-out',
       },
     },
   },

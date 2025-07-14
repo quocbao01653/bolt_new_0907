@@ -13,6 +13,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import Link from 'next/link';
+import ThemeToggle from '@/components/ui/theme-toggle';
 
 export default function AdminHeader() {
   const { data: session } = useSession();
@@ -34,6 +35,9 @@ export default function AdminHeader() {
 
           {/* Right side */}
           <div className="flex items-center space-x-4">
+            {/* Theme Toggle */}
+            <ThemeToggle />
+            
             {/* Notifications */}
             <Button variant="ghost" size="icon" className="relative">
               <Bell className="w-5 h-5" />
