@@ -24,6 +24,8 @@ import {
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Search, Eye, Package } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import ExportButton from '@/components/ui/export-button';
+import { formatDataForExport } from '@/lib/export';
 
 interface Order {
   id: string;
@@ -158,6 +160,11 @@ export default function AdminOrdersPage() {
       {/* Header */}
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold text-gray-900">Orders</h1>
+        <ExportButton 
+          data={orders}
+          formatData={formatDataForExport.orders}
+          loading={loading}
+        />
       </div>
 
       {/* Search */}

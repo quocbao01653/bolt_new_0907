@@ -56,7 +56,7 @@ export default function HeroSection() {
   };
 
   return (
-    <section className="relative h-[500px] md:h-[600px] lg:h-[700px] overflow-hidden bg-gray-900">
+    <section className="relative h-[500px] md:h-[600px] lg:h-[700px] overflow-hidden bg-gray-900 dark:bg-gray-950 transition-colors duration-300">
       {/* Animated Background Particles */}
       <div className="absolute inset-0 overflow-hidden">
         {Array.from({ length: 20 }).map((_, i) => (

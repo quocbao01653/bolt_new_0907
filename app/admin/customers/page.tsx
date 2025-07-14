@@ -23,6 +23,8 @@ import {
 } from '@/components/ui/dialog';
 import { Search, Eye, Mail, Calendar } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import ExportButton from '@/components/ui/export-button';
+import { formatDataForExport } from '@/lib/export';
 
 interface Customer {
   id: string;
@@ -121,6 +123,11 @@ export default function AdminCustomersPage() {
       {/* Header */}
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold text-gray-900">Customers</h1>
+        <ExportButton 
+          data={customers}
+          formatData={formatDataForExport.customers}
+          loading={loading}
+        />
       </div>
 
       {/* Search */}

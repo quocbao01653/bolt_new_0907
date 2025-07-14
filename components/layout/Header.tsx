@@ -36,6 +36,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet';
+import ThemeToggle from '@/components/ui/theme-toggle';
 
 const navigation = [
   { name: 'Home', href: '/' },
@@ -207,6 +208,8 @@ export default function Header() {
             )}
 
             {/* Enhanced User Menu */}
+            <ThemeToggle />
+            
             {status === 'loading' ? (
               <div className="w-8 h-8 bg-gray-200 rounded-full animate-pulse" />
             ) : session ? (
