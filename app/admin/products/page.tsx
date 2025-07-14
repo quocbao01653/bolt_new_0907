@@ -27,6 +27,9 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Plus, Search, Edit, Trash2, Eye } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import ExportButton from '@/components/ui/export-button';
+import { formatDataForExport } from '@/lib/export';
+import ImageUpload from '@/components/ui/image-upload';
 
 interface Product {
   id: string;
@@ -363,32 +366,11 @@ export default function AdminProductsPage() {
 
               <div>
                 <Label>Product Images</Label>
-                {formData.images.map((image, index) => (
-                  <div key={index} className="flex gap-2 mt-2">
-                    <Input
-                      placeholder="Image URL"
-                      value={image}
-                      onChange={(e) => handleImageChange(index, e.target.value)}
-                    />
-                    {formData.images.length > 1 && (
-                      <Button
-                        type="button"
-                        variant="outline"
-                        onClick={() => removeImageField(index)}
-                      >
-                        Remove
-                      </Button>
-                    )}
-                  </div>
-                ))}
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={addImageField}
-                  className="mt-2"
-                >
-                  Add Image
-                </Button>
+                <ImageUpload
+                  images={formData.images.filter(img => img.trim() !== '')}
+                  onChange={(images) => setFormData(prev => ({ ...prev, images }))}
+                  maxImages={5}
+                />
               </div>
 
               <div className="flex items-center space-x-2">
@@ -411,6 +393,11 @@ export default function AdminProductsPage() {
               </DialogFooter>
             </form>
           </DialogContent>
+          <ExportButton 
+            data={products}
+            formatData={formatDataForExport.products}
+            loading={loading}
+          />
         </Dialog>
       </div>
 
