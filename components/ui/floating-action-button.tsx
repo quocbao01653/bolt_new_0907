@@ -26,13 +26,13 @@ export default function FloatingActionButton() {
             className={`flex items-center space-x-3 transform transition-all duration-300 ${
               isOpen ? 'translate-x-0 opacity-100' : 'translate-x-8 opacity-0'
             }`}
-            style={{ transitionDelay: `${index * 50}ms` }}
+            className="w-14 h-14 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white shadow-lg hover:shadow-xl transform hover:scale-110 transition-all duration-300 group border-2 border-white dark:border-gray-800"
           >
             <span className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white px-3 py-1 rounded-lg text-sm font-medium shadow-lg whitespace-nowrap">
               {action.label}
             </span>
             <Button
-              size="icon"
+              className="w-12 h-12 rounded-full bg-purple-500 hover:bg-purple-600 text-white shadow-lg hover:shadow-xl transform hover:scale-110 transition-all duration-300 group border-2 border-white dark:border-gray-800"
               className={`${action.color} text-white shadow-lg hover:scale-110 transition-all duration-300 w-12 h-12 rounded-full`}
             >
               <action.icon className="w-5 h-5" />

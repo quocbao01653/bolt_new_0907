@@ -43,6 +43,10 @@ export default function ExportButton({ data, formatData, loading }: ExportButton
       <DropdownMenuTrigger asChild>
         <Button 
           variant="outline" 
+          disabled={loading} 
+          className="hover:scale-105 transition-transform duration-300 border-gray-300 hover:bg-gray-100 text-gray-700 dark:border-gray-600 dark:hover:bg-gray-800 dark:text-gray-200"
+        >
+          variant="outline" 
           disabled={loading || data.length === 0}
           className="hover:scale-105 transition-transform duration-200"
         >
@@ -50,11 +54,11 @@ export default function ExportButton({ data, formatData, loading }: ExportButton
           Export
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="animate-in slide-in-from-top-2 duration-300">
+      <DropdownMenuContent align="end" className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
         <DropdownMenuItem 
           onClick={() => handleExport('csv')}
           disabled={exporting === 'csv'}
-          className="cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+          className="flex items-center cursor-pointer text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700"
         >
           <FileSpreadsheet className="mr-2 h-4 w-4 text-green-600" />
           <span>{exporting === 'csv' ? 'Exporting...' : 'Export as CSV'}</span>
@@ -62,7 +66,7 @@ export default function ExportButton({ data, formatData, loading }: ExportButton
         <DropdownMenuItem 
           onClick={() => handleExport('pdf')}
           disabled={exporting === 'pdf'}
-          className="cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+          className="flex items-center cursor-pointer text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700"
         >
           <FileText className="mr-2 h-4 w-4 text-red-600" />
           <span>{exporting === 'pdf' ? 'Exporting...' : 'Export as PDF'}</span>

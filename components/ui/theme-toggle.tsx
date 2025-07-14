@@ -42,7 +42,7 @@ export default function ThemeToggle() {
 
   if (!mounted) {
     return (
-      <Button variant="ghost" size="icon" className="w-9 h-9">
+      <Button variant="outline" size="icon" className="w-9 h-9 border-gray-300 hover:bg-gray-100 dark:border-gray-600 dark:hover:bg-gray-800">
         <Sun className="h-4 w-4" />
       </Button>
     );
@@ -52,6 +52,10 @@ export default function ThemeToggle() {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button 
+          variant="outline" 
+          size="icon" 
+          className="w-9 h-9 border-gray-300 hover:bg-gray-100 hover:scale-110 transition-all duration-300 dark:border-gray-600 dark:hover:bg-gray-800 dark:text-gray-200"
+        >
           variant="ghost" 
           size="icon" 
           className="w-9 h-9 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-300 hover:scale-110"
@@ -62,24 +66,24 @@ export default function ThemeToggle() {
           <span className="sr-only">Toggle theme</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="animate-in slide-in-from-top-2 duration-300">
+      <DropdownMenuContent align="end" className="animate-fade-in-up bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
         <DropdownMenuItem 
           onClick={() => handleThemeChange('light')}
-          className="cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+          className="flex items-center space-x-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-900 dark:text-gray-100"
         >
           <Sun className="mr-2 h-4 w-4" />
           <span>Light</span>
         </DropdownMenuItem>
         <DropdownMenuItem 
           onClick={() => handleThemeChange('dark')}
-          className="cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+          className="flex items-center space-x-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-900 dark:text-gray-100"
         >
           <Moon className="mr-2 h-4 w-4" />
           <span>Dark</span>
         </DropdownMenuItem>
         <DropdownMenuItem 
           onClick={() => handleThemeChange('system')}
-          className="cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+          className="flex items-center space-x-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-900 dark:text-gray-100"
         >
           <Monitor className="mr-2 h-4 w-4" />
           <span>System</span>

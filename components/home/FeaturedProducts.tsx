@@ -263,7 +263,7 @@ export default function FeaturedProducts() {
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="absolute top-3 right-3 w-8 h-8 bg-white/90 hover:bg-white text-gray-600 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-all duration-300 transform hover:scale-110 shadow-lg"
+                    className="absolute top-3 right-3 w-8 h-8 bg-white/90 hover:bg-white text-gray-600 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-all duration-300 transform hover:scale-110 shadow-lg border border-gray-200"
                   >
                     <Heart className="w-4 h-4 transition-transform duration-300 hover:scale-125" />
                   </Button>
@@ -271,7 +271,7 @@ export default function FeaturedProducts() {
                   {/* Enhanced Quick add to cart */}
                   <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-full group-hover:translate-y-0">
                     <Button 
-                      className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white transform hover:scale-105 transition-all duration-300 shadow-lg group/btn"
+                      className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white transform hover:scale-105 transition-all duration-300 shadow-lg group/btn border border-white/20"
                       onClick={() => handleAddToCart(product.id)}
                       disabled={addingToCart === product.id || product.stock === 0}
                     >

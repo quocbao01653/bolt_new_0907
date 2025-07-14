@@ -77,6 +77,50 @@
   body {
     @apply bg-background text-foreground;
   }
+  
+  /* Ensure proper contrast for buttons and interactive elements */
+  .btn-contrast {
+    @apply border-gray-300 hover:bg-gray-100 text-gray-700;
+  }
+  
+  .dark .btn-contrast {
+    @apply border-gray-600 hover:bg-gray-800 text-gray-200;
+  }
+  
+  /* Improve visibility of ghost buttons in light mode */
+  .btn-ghost-improved {
+    @apply bg-transparent border border-gray-200 text-gray-700 hover:bg-gray-50 hover:border-gray-300;
+  }
+  
+  .dark .btn-ghost-improved {
+    @apply border-gray-700 text-gray-200 hover:bg-gray-800 hover:border-gray-600;
+  }
+  
+  /* Better dropdown menu contrast */
+  .dropdown-improved {
+    @apply bg-white border-gray-200 text-gray-900;
+  }
+  
+  .dark .dropdown-improved {
+    @apply bg-gray-800 border-gray-700 text-gray-100;
+  }
+  
+  /* Improved text contrast */
+  .text-contrast {
+    @apply text-gray-900;
+  }
+  
+  .dark .text-contrast {
+    @apply text-gray-100;
+  }
+  
+  .text-muted-contrast {
+    @apply text-gray-600;
+  }
+  
+  .dark .text-muted-contrast {
+    @apply text-gray-400;
+  }
 }
 
 /* Custom animations */
