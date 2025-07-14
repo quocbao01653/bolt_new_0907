@@ -195,14 +195,17 @@ export default function Header() {
             {/* Enhanced Cart with animation */}
             {session && (
               <Link href="/cart">
-                <Button variant="ghost" size="icon" className="relative group hover:scale-110 transition-all duration-300">
+                <Button 
+                  variant="outline" 
+                  size="icon" 
+                  className="relative group hover:scale-110 transition-all duration-300 border-gray-300 hover:bg-gray-100 dark:border-gray-600 dark:hover:bg-gray-800 dark:text-gray-200"
+                >
                   <ShoppingCart className="w-5 h-5 group-hover:animate-bounce" />
                   {cartCount > 0 && (
                     <Badge className="absolute -top-2 -right-2 w-5 h-5 rounded-full p-0 flex items-center justify-center text-xs bg-gradient-to-r from-red-500 to-pink-500 animate-pulse">
                       {cartCount > 99 ? '99+' : cartCount}
                     </Badge>
                   )}
-                  <div className="absolute inset-0 rounded-full bg-blue-500 opacity-0 group-hover:opacity-20 transition-opacity duration-300" />
                 </Button>
               </Link>
             )}
@@ -215,7 +218,10 @@ export default function Header() {
             ) : session ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="flex items-center space-x-2 hover:scale-105 transition-all duration-300 group">
+                  <Button 
+                    variant="outline" 
+                    className="flex items-center space-x-2 hover:scale-105 transition-all duration-300 group border-gray-300 hover:bg-gray-100 dark:border-gray-600 dark:hover:bg-gray-800"
+                  >
                     <div className="w-8 h-8 bg-gradient-to-br from-gray-200 to-gray-300 rounded-full flex items-center justify-center group-hover:from-blue-200 group-hover:to-purple-200 transition-all duration-300">
                       {session.user?.image ? (
                         <img
@@ -224,21 +230,21 @@ export default function Header() {
                           className="w-8 h-8 rounded-full object-cover"
                         />
                       ) : (
-                        <User className="w-4 h-4" />
+                        <User className="w-4 h-4 text-gray-600 dark:text-gray-300" />
                       )}
                     </div>
-                    <span className="hidden md:block text-sm font-medium group-hover:text-blue-600 transition-colors duration-300">
+                    <span className="hidden md:block text-sm font-medium text-gray-700 dark:text-gray-200 group-hover:text-blue-600 transition-colors duration-300">
                       {session.user?.name?.split(' ')[0] || 'Account'}
                     </span>
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-56 animate-fade-in-up">
+                <DropdownMenuContent align="end" className="w-56 animate-fade-in-up bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
                   <DropdownMenuLabel>
                     <div className="flex flex-col space-y-1">
-                      <p className="text-sm font-medium leading-none">
+                      <p className="text-sm font-medium leading-none text-gray-900 dark:text-gray-100">
                         {session.user?.name || 'User'}
                       </p>
-                      <p className="text-xs leading-none text-muted-foreground">
+                      <p className="text-xs leading-none text-gray-500 dark:text-gray-400">
                         {session.user?.email}
                       </p>
                     </div>
@@ -249,19 +255,19 @@ export default function Header() {
                   {session.user.role === 'CUSTOMER' && (
                     <>
                       <DropdownMenuItem asChild>
-                        <Link href="/dashboard" className="flex items-center group">
+                        <Link href="/dashboard" className="flex items-center group text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700">
                           <User className="mr-2 h-4 w-4 group-hover:scale-110 transition-transform duration-300" />
                           <span>Dashboard</span>
                         </Link>
                       </DropdownMenuItem>
                       <DropdownMenuItem asChild>
-                        <Link href="/dashboard/orders" className="flex items-center group">
+                        <Link href="/dashboard/orders" className="flex items-center group text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700">
                           <History className="mr-2 h-4 w-4 group-hover:scale-110 transition-transform duration-300" />
                           <span>Order History</span>
                         </Link>
                       </DropdownMenuItem>
                       <DropdownMenuItem asChild>
-                        <Link href="/cart" className="flex items-center group">
+                        <Link href="/cart" className="flex items-center group text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700">
                           <ShoppingCart className="mr-2 h-4 w-4 group-hover:scale-110 transition-transform duration-300" />
                           <span>Shopping Cart</span>
                           {cartCount > 0 && (
@@ -271,7 +277,7 @@ export default function Header() {
                           )}
                         </Link>
                       </DropdownMenuItem>
-                      <DropdownMenuItem disabled>
+                      <DropdownMenuItem disabled className="text-gray-400 dark:text-gray-500">
                         <Heart className="mr-2 h-4 w-4" />
                         <span>Wishlist</span>
                       </DropdownMenuItem>
@@ -282,19 +288,19 @@ export default function Header() {
                   {(session.user.role === 'ADMIN' || session.user.role === 'SUPER_ADMIN') && (
                     <>
                       <DropdownMenuItem asChild>
-                        <Link href="/admin" className="flex items-center group">
+                        <Link href="/admin" className="flex items-center group text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700">
                           <Package className="mr-2 h-4 w-4 group-hover:scale-110 transition-transform duration-300" />
                           <span>Admin Dashboard</span>
                         </Link>
                       </DropdownMenuItem>
                       <DropdownMenuItem asChild>
-                        <Link href="/dashboard/orders" className="flex items-center group">
+                        <Link href="/dashboard/orders" className="flex items-center group text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700">
                           <History className="mr-2 h-4 w-4 group-hover:scale-110 transition-transform duration-300" />
                           <span>My Order History</span>
                         </Link>
                       </DropdownMenuItem>
                       <DropdownMenuItem asChild>
-                        <Link href="/cart" className="flex items-center group">
+                        <Link href="/cart" className="flex items-center group text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700">
                           <ShoppingCart className="mr-2 h-4 w-4 group-hover:scale-110 transition-transform duration-300" />
                           <span>Shopping Cart</span>
                           {cartCount > 0 && (
@@ -308,12 +314,12 @@ export default function Header() {
                     </>
                   )}
 
-                  <DropdownMenuItem disabled>
+                  <DropdownMenuItem disabled className="text-gray-400 dark:text-gray-500">
                     <Settings className="mr-2 h-4 w-4" />
                     <span>Settings</span>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={handleSignOut} className="group">
+                  <DropdownMenuItem onClick={handleSignOut} className="group text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700">
                     <LogOut className="mr-2 h-4 w-4 group-hover:scale-110 transition-transform duration-300" />
                     <span>Sign Out</span>
                   </DropdownMenuItem>
@@ -322,7 +328,11 @@ export default function Header() {
             ) : (
               <div className="flex items-center space-x-2">
                 <Link href="/auth/signin">
-                  <Button variant="ghost" size="sm" className="hover:scale-105 transition-transform duration-300">
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className="hover:scale-105 transition-transform duration-300 border-gray-300 hover:bg-gray-100 text-gray-700 dark:border-gray-600 dark:hover:bg-gray-800 dark:text-gray-200"
+                  >
                     Sign In
                   </Button>
                 </Link>
@@ -337,7 +347,11 @@ export default function Header() {
             {/* Enhanced Mobile Menu */}
             <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
               <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className="lg:hidden hover:scale-110 transition-transform duration-300">
+                <Button 
+                  variant="outline" 
+                  size="icon" 
+                  className="lg:hidden hover:scale-110 transition-transform duration-300 border-gray-300 hover:bg-gray-100 dark:border-gray-600 dark:hover:bg-gray-800 dark:text-gray-200"
+                >
                   <Menu className="w-5 h-5" />
                 </Button>
               </SheetTrigger>
@@ -362,7 +376,7 @@ export default function Header() {
                         className={`block px-3 py-2 rounded-md text-base font-medium transition-all duration-300 transform hover:scale-105 ${
                           pathname === item.href
                             ? 'bg-gradient-to-r from-blue-100 to-purple-100 text-blue-600'
-                            : 'text-gray-700 hover:bg-gray-100'
+                            : 'text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700'
                         }`}
                         style={{ animationDelay: `${index * 50}ms` }}
                       >
@@ -375,8 +389,8 @@ export default function Header() {
                   {session ? (
                     <div className="pt-4 border-t space-y-2">
                       <div className="px-3 py-2">
-                        <p className="text-sm font-medium">{session.user?.name}</p>
-                        <p className="text-xs text-gray-500">{session.user?.email}</p>
+                        <p className="text-sm font-medium text-gray-900 dark:text-gray-100">{session.user?.name}</p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400">{session.user?.email}</p>
                       </div>
                       
                       {session.user.role === 'CUSTOMER' && (
@@ -384,7 +398,7 @@ export default function Header() {
                           <Link
                             href="/dashboard"
                             onClick={() => setMobileMenuOpen(false)}
-                            className="flex items-center px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100 transition-all duration-300 group"
+                            className="flex items-center px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-300 group"
                           >
                             <User className="mr-3 h-5 w-5 group-hover:scale-110 transition-transform duration-300" />
                             Dashboard
@@ -392,7 +406,7 @@ export default function Header() {
                           <Link
                             href="/dashboard/orders"
                             onClick={() => setMobileMenuOpen(false)}
-                            className="flex items-center px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100 transition-all duration-300 group"
+                            className="flex items-center px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-300 group"
                           >
                             <History className="mr-3 h-5 w-5 group-hover:scale-110 transition-transform duration-300" />
                             Order History
@@ -400,7 +414,7 @@ export default function Header() {
                           <Link
                             href="/cart"
                             onClick={() => setMobileMenuOpen(false)}
-                            className="flex items-center px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100 transition-all duration-300 group"
+                            className="flex items-center px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-300 group"
                           >
                             <ShoppingCart className="mr-3 h-5 w-5 group-hover:scale-110 transition-transform duration-300" />
                             Shopping Cart
@@ -418,7 +432,7 @@ export default function Header() {
                           <Link
                             href="/admin"
                             onClick={() => setMobileMenuOpen(false)}
-                            className="flex items-center px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100 transition-all duration-300 group"
+                            className="flex items-center px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-300 group"
                           >
                             <Package className="mr-3 h-5 w-5 group-hover:scale-110 transition-transform duration-300" />
                             Admin Dashboard
@@ -426,7 +440,7 @@ export default function Header() {
                           <Link
                             href="/dashboard/orders"
                             onClick={() => setMobileMenuOpen(false)}
-                            className="flex items-center px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100 transition-all duration-300 group"
+                            className="flex items-center px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-300 group"
                           >
                             <History className="mr-3 h-5 w-5 group-hover:scale-110 transition-transform duration-300" />
                             My Order History
@@ -434,7 +448,7 @@ export default function Header() {
                           <Link
                             href="/cart"
                             onClick={() => setMobileMenuOpen(false)}
-                            className="flex items-center px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100 transition-all duration-300 group"
+                            className="flex items-center px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-300 group"
                           >
                             <ShoppingCart className="mr-3 h-5 w-5 group-hover:scale-110 transition-transform duration-300" />
                             Shopping Cart
@@ -452,7 +466,7 @@ export default function Header() {
                           setMobileMenuOpen(false);
                           handleSignOut();
                         }}
-                        className="flex items-center w-full px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100 transition-all duration-300 group"
+                        className="flex items-center w-full px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-300 group"
                       >
                         <LogOut className="mr-3 h-5 w-5 group-hover:scale-110 transition-transform duration-300" />
                         Sign Out
@@ -463,7 +477,7 @@ export default function Header() {
                       <Link
                         href="/auth/signin"
                         onClick={() => setMobileMenuOpen(false)}
-                        className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100 transition-all duration-300"
+                        className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-300"
                       >
                         Sign In
                       </Link>
