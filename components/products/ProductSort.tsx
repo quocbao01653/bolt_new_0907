@@ -29,14 +29,18 @@ export default function ProductSort({ sortBy, sortOrder, onSortChange }: Product
 
   return (
     <div className="flex items-center space-x-2">
-      <span className="text-sm text-gray-600 whitespace-nowrap">Sort by:</span>
+      <span className="text-sm text-gray-600 dark:text-gray-400 whitespace-nowrap">Sort by:</span>
       <Select value={currentValue} onValueChange={handleSortChange}>
-        <SelectTrigger className="w-48">
+        <SelectTrigger className="w-48 border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100">
           <SelectValue />
         </SelectTrigger>
-        <SelectContent>
+        <SelectContent className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
           {sortOptions.map((option) => (
-            <SelectItem key={option.value} value={option.value}>
+            <SelectItem 
+              key={option.value} 
+              value={option.value}
+              className="text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700"
+            >
               {option.label}
             </SelectItem>
           ))}

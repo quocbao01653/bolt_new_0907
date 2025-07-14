@@ -132,14 +132,15 @@ export default function ProductFilters({ filters, onFilterChange }: ProductFilte
                     onCheckedChange={(checked) => 
                       handleCategoryChange(category.slug, checked as boolean)
                     }
+                    className="border-gray-300 data-[state=checked]:bg-blue-600 data-[state=checked]:border-blue-600 dark:border-gray-600"
                   />
                   <Label
                     htmlFor={category.slug}
-                    className="text-sm font-normal cursor-pointer flex-1"
+                    className="text-sm font-normal cursor-pointer flex-1 text-gray-700 dark:text-gray-200"
                   >
                     {category.name}
                   </Label>
-                  <span className="text-xs text-gray-500">
+                  <span className="text-xs text-gray-500 dark:text-gray-400">
                     ({category._count.products})
                   </span>
                 </div>
@@ -151,7 +152,7 @@ export default function ProductFilters({ filters, onFilterChange }: ProductFilte
 
           {/* Price Range */}
           <div>
-            <Label className="text-sm font-medium mb-3 block">
+            <Label className="text-sm font-medium mb-3 block text-gray-700 dark:text-gray-200">
               Price Range: ${priceRange[0]} - ${priceRange[1]}
             </Label>
             <Slider
@@ -160,7 +161,7 @@ export default function ProductFilters({ filters, onFilterChange }: ProductFilte
               max={1000}
               min={0}
               step={10}
-              className="mt-2"
+              className="mt-2 [&_[role=slider]]:bg-blue-600 [&_[role=slider]]:border-blue-600"
             />
             <div className="flex items-center space-x-2 mt-3">
               <Input
@@ -168,15 +169,15 @@ export default function ProductFilters({ filters, onFilterChange }: ProductFilte
                 placeholder="Min"
                 value={priceRange[0]}
                 onChange={(e) => handlePriceChange([parseInt(e.target.value) || 0, priceRange[1]])}
-                className="w-20"
+                className="w-20 border-gray-300 dark:border-gray-600"
               />
-              <span className="text-gray-500">-</span>
+              <span className="text-gray-500 dark:text-gray-400">-</span>
               <Input
                 type="number"
                 placeholder="Max"
                 value={priceRange[1]}
                 onChange={(e) => handlePriceChange([priceRange[0], parseInt(e.target.value) || 1000])}
-                className="w-20"
+                className="w-20 border-gray-300 dark:border-gray-600"
               />
             </div>
           </div>
@@ -185,12 +186,15 @@ export default function ProductFilters({ filters, onFilterChange }: ProductFilte
 
           {/* Rating Filter */}
           <div>
-            <Label className="text-sm font-medium mb-3 block">Minimum Rating</Label>
+            <Label className="text-sm font-medium mb-3 block text-gray-700 dark:text-gray-200">Minimum Rating</Label>
             <div className="space-y-2">
               {[4, 3, 2, 1].map((rating) => (
                 <div key={rating} className="flex items-center space-x-2">
-                  <Checkbox id={`rating-${rating}`} />
-                  <Label htmlFor={`rating-${rating}`} className="text-sm font-normal cursor-pointer">
+                  <Checkbox 
+                    id={`rating-${rating}`} 
+                    className="border-gray-300 data-[state=checked]:bg-blue-600 data-[state=checked]:border-blue-600 dark:border-gray-600"
+                  />
+                  <Label htmlFor={`rating-${rating}`} className="text-sm font-normal cursor-pointer text-gray-700 dark:text-gray-200">
                     {rating}+ Stars
                   </Label>
                 </div>
@@ -202,17 +206,23 @@ export default function ProductFilters({ filters, onFilterChange }: ProductFilte
 
           {/* Availability */}
           <div>
-            <Label className="text-sm font-medium mb-3 block">Availability</Label>
+            <Label className="text-sm font-medium mb-3 block text-gray-700 dark:text-gray-200">Availability</Label>
             <div className="space-y-2">
               <div className="flex items-center space-x-2">
-                <Checkbox id="in-stock" />
-                <Label htmlFor="in-stock" className="text-sm font-normal cursor-pointer">
+                <Checkbox 
+                  id="in-stock" 
+                  className="border-gray-300 data-[state=checked]:bg-blue-600 data-[state=checked]:border-blue-600 dark:border-gray-600"
+                />
+                <Label htmlFor="in-stock" className="text-sm font-normal cursor-pointer text-gray-700 dark:text-gray-200">
                   In Stock
                 </Label>
               </div>
               <div className="flex items-center space-x-2">
-                <Checkbox id="on-sale" />
-                <Label htmlFor="on-sale" className="text-sm font-normal cursor-pointer">
+                <Checkbox 
+                  id="on-sale" 
+                  className="border-gray-300 data-[state=checked]:bg-blue-600 data-[state=checked]:border-blue-600 dark:border-gray-600"
+                />
+                <Label htmlFor="on-sale" className="text-sm font-normal cursor-pointer text-gray-700 dark:text-gray-200">
                   On Sale
                 </Label>
               </div>
