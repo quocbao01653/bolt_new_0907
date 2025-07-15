@@ -50,6 +50,7 @@ export default function ProductsPage() {
   });
   const [showFilters, setShowFilters] = useState(false);
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  const [isLoading, setIsLoading] = useState(false);
 
   const [filters, setFilters] = useState({
     category: searchParams.get('category') || '',
@@ -66,6 +67,7 @@ export default function ProductsPage() {
 
   const fetchProducts = async () => {
     setLoading(true);
+    setIsLoading(true);
     try {
       const params = new URLSearchParams({
         page: pagination.page.toString(),
@@ -84,6 +86,7 @@ export default function ProductsPage() {
       console.error('Error fetching products:', error);
     } finally {
       setLoading(false);
+      setIsLoading(false);
     }
   };
 
@@ -98,17 +101,27 @@ export default function ProductsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50">
       <Header />
       
-      <main className="container mx-auto px-4 py-8">
+      <main className="container mx-auto px-4 py-8 relative">
+        {/* Animated background elements */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-blue-100 to-purple-100 rounded-full opacity-30 animate-float" />
+          <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-br from-pink-100 to-orange-100 rounded-full opacity-30 animate-float" style={{ animationDelay: '2s' }} />
+        </div>
+        
         {/* Page Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+        <div className="mb-8 relative animate-fade-in-up">
+          <div className="inline-flex items-center space-x-2 bg-gradient-to-r from-blue-100 to-purple-100 px-4 py-2 rounded-full mb-4">
+            <div className="w-2 h-2 bg-blue-600 rounded-full animate-pulse" />
+            <span className="text-sm font-medium text-blue-800">Product Catalog</span>
+          </div>
+          <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-gray-900 via-blue-900 to-purple-900 bg-clip-text text-transparent mb-2">
             {filters.search ? `Search results for "${filters.search}"` : 'All Products'}
           </h1>
-          <p className="text-gray-600">
-            {pagination.total} products found
+          <p className="text-lg text-gray-600">
+            {isLoading ? 'Loading products...' : `${pagination.total} products found`}
           </p>
         </div>
 
@@ -124,13 +137,13 @@ export default function ProductsPage() {
           {/* Main Content */}
           <div className="flex-1">
             {/* Toolbar */}
-            <div className="flex items-center justify-between mb-6 p-4 bg-gray-50 rounded-lg">
+            <div className="flex items-center justify-between mb-6 p-4 bg-white rounded-lg shadow-sm border border-gray-100 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
               <div className="flex items-center space-x-4">
                 <Button
                   variant="outline"
                   size="sm"
                   onClick={() => setShowFilters(!showFilters)}
-                  className="lg:hidden"
+                  className="lg:hidden hover:scale-105 transition-transform duration-300"
                 >
                   <Filter className="w-4 h-4 mr-2" />
                   Filters
@@ -141,6 +154,7 @@ export default function ProductsPage() {
                     variant={viewMode === 'grid' ? 'default' : 'outline'}
                     size="sm"
                     onClick={() => setViewMode('grid')}
+                    className="hover:scale-105 transition-transform duration-300"
                   >
                     <Grid className="w-4 h-4" />
                   </Button>
@@ -148,6 +162,7 @@ export default function ProductsPage() {
                     variant={viewMode === 'list' ? 'default' : 'outline'}
                     size="sm"
                     onClick={() => setViewMode('list')}
+                    className="hover:scale-105 transition-transform duration-300"
                   >
                     <List className="w-4 h-4" />
                   </Button>
@@ -164,20 +179,23 @@ export default function ProductsPage() {
             </div>
 
             {/* Products Grid */}
-            <ProductGrid
-              products={products}
-              loading={loading}
-              viewMode={viewMode}
-            />
+            <div className="animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
+              <ProductGrid
+                products={products}
+                loading={loading}
+                viewMode={viewMode}
+              />
+            </div>
 
             {/* Pagination */}
             {pagination.pages > 1 && (
-              <div className="mt-12 flex justify-center">
+              <div className="mt-12 flex justify-center animate-fade-in-up" style={{ animationDelay: '0.6s' }}>
                 <div className="flex items-center space-x-2">
                   <Button
                     variant="outline"
                     disabled={pagination.page === 1}
                     onClick={() => handlePageChange(pagination.page - 1)}
+                    className="hover:scale-105 transition-transform duration-300"
                   >
                     Previous
                   </Button>
@@ -185,9 +203,12 @@ export default function ProductsPage() {
                   {Array.from({ length: pagination.pages }, (_, i) => i + 1).map(page => (
                     <Button
                       key={page}
-                      variant={page === pagination.page ? 'default' : 'outline'}
+                      className={`w-10 hover:scale-105 transition-transform duration-300 ${
+                        page === pagination.page 
+                          ? 'bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white' 
+                          : 'border border-gray-300 hover:border-blue-400 hover:bg-blue-50'
+                      }`}
                       onClick={() => handlePageChange(page)}
-                      className="w-10"
                     >
                       {page}
                     </Button>
@@ -197,6 +218,7 @@ export default function ProductsPage() {
                     variant="outline"
                     disabled={pagination.page === pagination.pages}
                     onClick={() => handlePageChange(pagination.page + 1)}
+                    className="hover:scale-105 transition-transform duration-300"
                   >
                     Next
                   </Button>

@@ -9,6 +9,8 @@ import { Slider } from '@/components/ui/slider';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 
+import { Star } from 'lucide-react';
+
 interface Category {
   id: string;
   name: string;
@@ -194,8 +196,20 @@ export default function ProductFilters({ filters, onFilterChange }: ProductFilte
                     id={`rating-${rating}`} 
                     className="border-gray-300 data-[state=checked]:bg-blue-600 data-[state=checked]:border-blue-600 dark:border-gray-600"
                   />
-                  <Label htmlFor={`rating-${rating}`} className="text-sm font-normal cursor-pointer text-gray-700 dark:text-gray-200">
-                    {rating}+ Stars
+                  <Label htmlFor={`rating-${rating}`} className="text-sm font-normal cursor-pointer text-gray-700 dark:text-gray-200 flex items-center space-x-1">
+                    <span>{rating}+ Stars</span>
+                    <div className="flex">
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <Star
+                          key={star}
+                          className={`w-3 h-3 ${
+                            star <= rating
+                              ? 'text-yellow-400 fill-current'
+                              : 'text-gray-300'
+                          }`}
+                        />
+                      ))}
+                    </div>
                   </Label>
                 </div>
               ))}

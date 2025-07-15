@@ -92,12 +92,12 @@ export default function ProductGrid({ products, loading, viewMode }: ProductGrid
     return (
       <div className={`grid ${viewMode === 'grid' ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4' : 'grid-cols-1'} gap-6`}>
         {Array.from({ length: 8 }).map((_, i) => (
-          <Card key={i} className="overflow-hidden animate-pulse">
-            <div className="h-48 bg-gray-200" />
+          <Card key={i} className="overflow-hidden animate-pulse hover-lift">
+            <div className="h-48 bg-gradient-to-br from-gray-200 to-gray-300 animate-shimmer" />
             <CardContent className="p-4">
-              <div className="h-4 bg-gray-200 rounded mb-2" />
-              <div className="h-4 bg-gray-200 rounded w-2/3 mb-2" />
-              <div className="h-6 bg-gray-200 rounded w-1/3" />
+              <div className="h-4 bg-gradient-to-r from-gray-200 to-gray-300 rounded mb-2 animate-shimmer" />
+              <div className="h-4 bg-gradient-to-r from-gray-200 to-gray-300 rounded w-2/3 mb-2 animate-shimmer" />
+              <div className="h-6 bg-gradient-to-r from-gray-200 to-gray-300 rounded w-1/3 animate-shimmer" />
             </CardContent>
           </Card>
         ))}
@@ -107,12 +107,18 @@ export default function ProductGrid({ products, loading, viewMode }: ProductGrid
 
   if (products.length === 0) {
     return (
-      <div className="text-center py-12">
-        <div className="text-gray-400 mb-4">
-          <ShoppingCart className="w-16 h-16 mx-auto" />
+      <div className="text-center py-16 animate-fade-in-up">
+        <div className="w-24 h-24 bg-gradient-to-br from-gray-100 to-gray-200 rounded-full flex items-center justify-center mx-auto mb-6">
+          <ShoppingCart className="w-12 h-12 text-gray-400" />
         </div>
-        <h3 className="text-lg font-medium text-gray-900 mb-2">No products found</h3>
-        <p className="text-gray-600">Try adjusting your filters or search terms.</p>
+        <h3 className="text-2xl font-bold text-gray-900 mb-3">No products found</h3>
+        <p className="text-gray-600 mb-6 max-w-md mx-auto">We couldn't find any products matching your criteria. Try adjusting your filters or search terms.</p>
+        <Button 
+          onClick={() => window.location.reload()} 
+          className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 transform hover:scale-105 transition-all duration-300"
+        >
+          Reset Filters
+        </Button>
       </div>
     );
   }
@@ -223,14 +229,14 @@ export default function ProductGrid({ products, loading, viewMode }: ProductGrid
             <Button
               variant="ghost"
               size="icon"
-              className="absolute top-3 right-3 w-8 h-8 bg-white/80 hover:bg-white text-gray-600 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-all border border-gray-200 shadow-sm"
+              className="absolute top-3 right-3 w-8 h-8 bg-white/90 hover:bg-white text-gray-600 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-all duration-300 border border-gray-200 shadow-sm"
             >
               <Heart className="w-4 h-4" />
             </Button>
 
-            <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
+            <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-full group-hover:translate-y-0">
               <Button 
-                className="w-full bg-white text-gray-900 hover:bg-gray-100"
+                className="w-full bg-white text-gray-900 hover:bg-gray-100 transform hover:scale-105 transition-all duration-300 shadow-lg"
                 disabled={product.stock === 0}
                 onClick={() => handleAddToCart(product.id)}
               >
@@ -241,17 +247,17 @@ export default function ProductGrid({ products, loading, viewMode }: ProductGrid
 
           <CardContent className="p-4">
             <Link href={`/products/${product.slug}`}>
-              <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2 group-hover:text-blue-600 transition-colors">
+              <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2 group-hover:text-blue-600 transition-colors duration-300 leading-tight">
                 {product.name}
               </h3>
             </Link>
             
-            <div className="flex items-center space-x-1 mb-3">
+            <div className="flex items-center space-x-1 mb-3 animate-fade-in-up">
               <div className="flex">
                 {[1, 2, 3, 4, 5].map((star) => (
                   <Star
                     key={star}
-                    className={`w-4 h-4 ${
+                    className={`w-4 h-4 transition-all duration-300 hover:scale-125 ${
                       star <= Math.floor(product.averageRating)
                         ? 'text-yellow-400 fill-current'
                         : 'text-gray-300'
@@ -259,13 +265,13 @@ export default function ProductGrid({ products, loading, viewMode }: ProductGrid
                   />
                 ))}
               </div>
-              <span className="text-sm text-gray-600">
+              <span className="text-sm text-gray-600 group-hover:text-gray-800 transition-colors duration-300">
                 {product.averageRating} ({product.reviewCount})
               </span>
             </div>
 
-            <div className="flex items-center space-x-2 mb-2">
-              <span className="text-lg font-bold text-gray-900">
+            <div className="flex items-center space-x-2 mb-3">
+              <span className="text-lg font-bold bg-gradient-to-r from-gray-900 to-blue-900 bg-clip-text text-transparent">
                 ${product.price}
               </span>
               {product.comparePrice && (
@@ -275,9 +281,18 @@ export default function ProductGrid({ products, loading, viewMode }: ProductGrid
               )}
             </div>
             
-            <Badge variant={product.stock > 0 ? 'default' : 'destructive'} className="text-xs">
-              {product.stock > 0 ? `${product.stock} in stock` : 'Out of stock'}
-            </Badge>
+            <div className="flex items-center justify-between">
+              <Badge variant={product.stock > 0 ? 'default' : 'destructive'} className="text-xs animate-pulse">
+                {product.stock > 0 ? (
+                  product.stock <= 10 ? `Only ${product.stock} left` : 'In Stock'
+                ) : 'Out of Stock'}
+              </Badge>
+              {product.comparePrice && (
+                <Badge className="bg-gradient-to-r from-red-500 to-pink-500 text-white text-xs">
+                  {Math.round(((product.comparePrice - product.price) / product.comparePrice) * 100)}% OFF
+                </Badge>
+              )}
+            </div>
           </CardContent>
         </Card>
       ))}
