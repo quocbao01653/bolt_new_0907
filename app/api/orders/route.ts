@@ -197,6 +197,26 @@ export async function POST(request: NextRequest) {
       return newOrder;
     });
 
+    // Send email notifications
+    try {
+      await fetch(`${process.env.NEXTAUTH_URL || 'http://localhost:3000'}/api/email/order-notification`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          orderId: order.id,
+          orderNumber: order.orderNumber,
+          total: Number(order.total),
+          customerName: session.user.name || 'Customer',
+          customerEmail: session.user.email,
+        }),
+      });
+    } catch (emailError) {
+      console.error('Failed to send email notifications:', emailError);
+      // Don't fail the order creation if email fails
+    }
+
     // Convert Decimal fields to numbers for JSON serialization
     const serializedOrder = {
       ...order,

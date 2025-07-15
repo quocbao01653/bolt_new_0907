@@ -3,11 +3,12 @@
 import { useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { Star, Heart, ShoppingCart, Minus, Plus, Truck, Shield, RotateCcw } from 'lucide-react';
+import { Star, ShoppingCart, Minus, Plus, Truck, Shield, RotateCcw, Package, Award, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { useToast } from '@/hooks/use-toast';
+import WishlistButton from '@/components/ui/wishlist-button';
 
 interface Product {
   id: string;
@@ -27,7 +28,6 @@ interface ProductInfoProps {
 
 export default function ProductInfo({ product }: ProductInfoProps) {
   const [quantity, setQuantity] = useState(1);
-  const [isWishlisted, setIsWishlisted] = useState(false);
   const [addingToCart, setAddingToCart] = useState(false);
   const { data: session } = useSession();
   const router = useRouter();
@@ -95,19 +95,26 @@ export default function ProductInfo({ product }: ProductInfoProps) {
 
   return (
     <div className="space-y-6">
-      {/* Product Title */}
-      <div>
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">{product.name}</h1>
-        <p className="text-gray-600">SKU: {product.sku}</p>
+      {/* Product Title with Animation */}
+      <div className="animate-fade-in-up">
+        <h1 className="text-3xl font-bold text-gray-900 mb-2 leading-tight">{product.name}</h1>
+        <div className="flex items-center space-x-2 text-sm text-gray-600">
+          <span>SKU: {product.sku}</span>
+          <span>•</span>
+          <div className="flex items-center space-x-1">
+            <Package className="w-4 h-4" />
+            <span>In Stock</span>
+          </div>
+        </div>
       </div>
 
-      {/* Rating */}
-      <div className="flex items-center space-x-2">
-        <div className="flex items-center">
+      {/* Rating with Enhanced Animation */}
+      <div className="flex items-center space-x-3 animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
+        <div className="flex items-center space-x-1">
           {[1, 2, 3, 4, 5].map((star) => (
             <Star
               key={star}
-              className={`w-5 h-5 ${
+              className={`w-5 h-5 transition-all duration-300 hover:scale-125 ${
                 star <= Math.floor(product.averageRating)
                   ? 'text-yellow-400 fill-current'
                   : 'text-gray-300'
@@ -115,111 +122,170 @@ export default function ProductInfo({ product }: ProductInfoProps) {
             />
           ))}
         </div>
-        <span className="text-sm text-gray-600">
+        <span className="text-sm font-medium text-gray-700">
           {product.averageRating} ({product.reviewCount} reviews)
         </span>
-      </div>
-
-      {/* Price */}
-      <div className="flex items-center space-x-3">
-        <span className="text-3xl font-bold text-gray-900">
-          ${product.price}
-        </span>
-        {product.comparePrice && (
-          <>
-            <span className="text-xl text-gray-500 line-through">
-              ${product.comparePrice}
-            </span>
-            <Badge className="bg-red-500 hover:bg-red-600">
-              {discountPercentage}% OFF
-            </Badge>
-          </>
+        {product.reviewCount > 100 && (
+          <Badge className="bg-green-100 text-green-800 animate-pulse">
+            <Award className="w-3 h-3 mr-1" />
+            Bestseller
+          </Badge>
         )}
       </div>
 
-      {/* Stock Status */}
-      <div>
-        <Badge variant={product.stock > 0 ? 'default' : 'destructive'}>
-          {product.stock > 0 ? `${product.stock} in stock` : 'Out of stock'}
-        </Badge>
-        {product.stock > 0 && product.stock <= 10 && (
-          <p className="text-orange-600 text-sm mt-1">
-            Only {product.stock} left in stock!
+      {/* Price with Enhanced Styling */}
+      <div className="animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
+        <div className="flex items-center space-x-3 mb-2">
+          <span className="text-4xl font-bold bg-gradient-to-r from-gray-900 to-blue-900 bg-clip-text text-transparent">
+            ${product.price}
+          </span>
+          {product.comparePrice && (
+            <>
+              <span className="text-xl text-gray-500 line-through">
+                ${product.comparePrice}
+              </span>
+              <Badge className="bg-gradient-to-r from-red-500 to-pink-500 text-white animate-pulse">
+                <Zap className="w-3 h-3 mr-1" />
+                {discountPercentage}% OFF
+              </Badge>
+            </>
+          )}
+        </div>
+        {product.comparePrice && (
+          <p className="text-sm text-green-600 font-medium">
+            You save ${(product.comparePrice - product.price).toFixed(2)}!
           </p>
         )}
       </div>
 
-      {/* Description */}
-      <div>
-        <h3 className="font-semibold text-gray-900 mb-2">Description</h3>
-        <p className="text-gray-700 leading-relaxed">{product.description}</p>
+      {/* Stock Status with Animation */}
+      <div className="animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
+        <div className="flex items-center space-x-2">
+          <Badge 
+            variant={product.stock > 0 ? 'default' : 'destructive'}
+            className="animate-pulse"
+          >
+            {product.stock > 0 ? `${product.stock} in stock` : 'Out of stock'}
+          </Badge>
+          {product.stock > 0 && product.stock <= 10 && (
+            <Badge variant="destructive" className="animate-bounce">
+              Only {product.stock} left!
+            </Badge>
+          )}
+        </div>
+      </div>
+
+      {/* Description with Better Typography */}
+      <div className="animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
+        <h3 className="font-semibold text-gray-900 mb-3 text-lg">Product Description</h3>
+        <div className="prose prose-gray max-w-none">
+          <p className="text-gray-700 leading-relaxed text-base">{product.description}</p>
+        </div>
       </div>
 
       <Separator />
 
-      {/* Quantity and Add to Cart */}
-      <div className="space-y-4">
-        <div className="flex items-center space-x-4">
-          <span className="font-medium text-gray-900">Quantity:</span>
-          <div className="flex items-center border rounded-md">
+      {/* Quantity and Add to Cart with Enhanced Styling */}
+      <div className="space-y-6 animate-fade-in-up" style={{ animationDelay: '0.5s' }}>
+        <div className="flex items-center space-x-6">
+          <span className="font-medium text-gray-900 text-lg">Quantity:</span>
+          <div className="flex items-center border-2 border-gray-200 rounded-lg overflow-hidden hover:border-blue-300 transition-colors duration-300">
             <Button
               variant="ghost"
               size="icon"
               onClick={() => handleQuantityChange(-1)}
               disabled={quantity <= 1}
-              className="h-10 w-10"
+              className="h-12 w-12 hover:bg-gray-100 transition-all duration-300"
             >
               <Minus className="w-4 h-4" />
             </Button>
-            <span className="px-4 py-2 min-w-[3rem] text-center">{quantity}</span>
+            <span className="px-6 py-3 min-w-[4rem] text-center font-semibold text-lg bg-gray-50">
+              {quantity}
+            </span>
             <Button
               variant="ghost"
               size="icon"
               onClick={() => handleQuantityChange(1)}
               disabled={quantity >= product.stock}
-              className="h-10 w-10"
+              className="h-12 w-12 hover:bg-gray-100 transition-all duration-300"
             >
               <Plus className="w-4 h-4" />
             </Button>
           </div>
         </div>
 
-        <div className="flex space-x-3">
+        <div className="flex space-x-4">
           <Button
             onClick={handleAddToCart}
             disabled={product.stock === 0 || addingToCart}
-            className="flex-1"
+            className="flex-1 h-14 text-lg font-semibold bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
             size="lg"
           >
-            <ShoppingCart className="w-5 h-5 mr-2" />
-            {addingToCart ? 'Adding...' : product.stock === 0 ? 'Out of Stock' : 'Add to Cart'}
+            <ShoppingCart className="w-5 h-5 mr-3" />
+            {addingToCart ? (
+              <span className="flex items-center">
+                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
+                Adding...
+              </span>
+            ) : product.stock === 0 ? (
+              'Out of Stock'
+            ) : (
+              `Add to Cart - $${(product.price * quantity).toFixed(2)}`
+            )}
           </Button>
-          <Button
-            variant="outline"
+          <WishlistButton 
+            productId={product.id} 
             size="lg"
-            onClick={() => setIsWishlisted(!isWishlisted)}
-            className={isWishlisted ? 'text-red-500 border-red-500' : ''}
-          >
-            <Heart className={`w-5 h-5 ${isWishlisted ? 'fill-current' : ''}`} />
-          </Button>
+            className="h-14 w-14 border-2 border-gray-200 hover:border-red-300 hover:bg-red-50"
+          />
         </div>
       </div>
 
       <Separator />
 
-      {/* Features */}
-      <div className="space-y-3">
-        <div className="flex items-center space-x-3 text-sm text-gray-600">
-          <Truck className="w-5 h-5 text-green-600" />
-          <span>Free shipping on orders over $50</span>
-        </div>
-        <div className="flex items-center space-x-3 text-sm text-gray-600">
-          <RotateCcw className="w-5 h-5 text-blue-600" />
-          <span>30-day return policy</span>
-        </div>
-        <div className="flex items-center space-x-3 text-sm text-gray-600">
-          <Shield className="w-5 h-5 text-purple-600" />
-          <span>2-year warranty included</span>
+      {/* Enhanced Features Section */}
+      <div className="space-y-4 animate-fade-in-up" style={{ animationDelay: '0.6s' }}>
+        <h3 className="font-semibold text-gray-900 text-lg mb-4">Why Choose This Product?</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="flex items-center space-x-3 p-3 bg-green-50 rounded-lg hover:bg-green-100 transition-colors duration-300">
+            <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+              <Truck className="w-5 h-5 text-green-600" />
+            </div>
+            <div>
+              <p className="font-medium text-green-800">Free Shipping</p>
+              <p className="text-sm text-green-600">On orders over $50</p>
+            </div>
+          </div>
+          
+          <div className="flex items-center space-x-3 p-3 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors duration-300">
+            <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+              <RotateCcw className="w-5 h-5 text-blue-600" />
+            </div>
+            <div>
+              <p className="font-medium text-blue-800">Easy Returns</p>
+              <p className="text-sm text-blue-600">30-day return policy</p>
+            </div>
+          </div>
+          
+          <div className="flex items-center space-x-3 p-3 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors duration-300">
+            <div className="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center">
+              <Shield className="w-5 h-5 text-purple-600" />
+            </div>
+            <div>
+              <p className="font-medium text-purple-800">Warranty</p>
+              <p className="text-sm text-purple-600">2-year coverage included</p>
+            </div>
+          </div>
+          
+          <div className="flex items-center space-x-3 p-3 bg-orange-50 rounded-lg hover:bg-orange-100 transition-colors duration-300">
+            <div className="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center">
+              <Award className="w-5 h-5 text-orange-600" />
+            </div>
+            <div>
+              <p className="font-medium text-orange-800">Quality Assured</p>
+              <p className="text-sm text-orange-600">Premium materials</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
