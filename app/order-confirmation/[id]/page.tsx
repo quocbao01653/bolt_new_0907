@@ -288,7 +288,7 @@ export default function OrderConfirmationPage() {
                   <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
               </Link>
-              <Link href="/dashboard" className="block">
+              <Link href="/dashboard/orders" className="block">
                 <Button variant="outline" className="w-full">
                   Go to Order History
                 </Button>

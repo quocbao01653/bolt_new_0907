@@ -127,6 +127,8 @@ export default function AdminCustomersPage() {
           data={customers}
           formatData={formatDataForExport.customers}
           loading={loading}
+          exportAll={true}
+          exportType="customers"
         />
       </div>
 

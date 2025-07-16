@@ -7,55 +7,60 @@ import { exportToCSV, exportAllData } from '@/lib/export';
 import { useToast } from '@/hooks/use-toast';
 
 interface ExportButtonProps {
-  data?: any[];
-  formatData?: (data: any[]) => any;
-  loading?: boolean;
-  type?: 'products' | 'customers' | 'orders';
-  className?: string;
+  data: any[];
+  formatData: (data: any[]) => any;
+  loading: boolean;
+  exportAll?: boolean;
+  exportType?: 'products' | 'customers' | 'orders';
 }
 
 export default function ExportButton({ 
-  data = [], 
+  data, 
   formatData, 
-  loading = false, 
-  type,
-  className = '' 
+  loading, 
+  exportAll = false,
+  exportType = 'products'
 }: ExportButtonProps) {
   const [exporting, setExporting] = useState(false);
   const { toast } = useToast();
 
   const handleExport = async () => {
-    if (loading || exporting) return;
-
+    if (loading) return;
+    
     setExporting(true);
     try {
       let exportData;
-
-      // If type is specified, fetch all data from API
-      if (type && exportAllData[type]) {
-        exportData = await exportAllData[type]();
-      } else if (formatData && data.length > 0) {
-        // Use provided data and format function
-        exportData = formatData(data);
+      
+      if (exportAll) {
+        // Export all data by fetching from API
+        switch (exportType) {
+          case 'products':
+            exportData = await exportAllData.products();
+            break;
+          case 'customers':
+            exportData = await exportAllData.customers();
+            break;
+          case 'orders':
+            exportData = await exportAllData.orders();
+            break;
+          default:
+            exportData = formatData(data);
+        }
       } else {
-        toast({
-          title: "Export Error",
-          description: "No data available to export",
-          variant: "destructive",
-        });
-        return;
+        // Export current page data
+        exportData = formatData(data);
       }
-
+      
       exportToCSV(exportData);
       
       toast({
-        title: "Export Successful",
-        description: `${exportData.rows.length} records exported successfully`,
+        title: "Export successful",
+        description: `${exportAll ? 'All' : 'Current page'} data exported to CSV file.`,
       });
     } catch (error) {
       console.error('Export error:', error);
       toast({
-        title: "Export Failed",
+        title: "Export failed",
         description: "Failed to export data. Please try again.",
         variant: "destructive",
       });
@@ -65,19 +70,21 @@ export default function ExportButton({
   };
 
   return (
-    <Button
-      onClick={handleExport}
-      disabled={loading || exporting}
-      variant="outline"
-      size="sm"
-      className={`hover:scale-105 transition-transform duration-300 ${className}`}
-    >
-      {exporting ? (
-        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-      ) : (
-        <Download className="w-4 h-4 mr-2" />
-      )}
-      {exporting ? 'Exporting...' : 'Export All CSV'}
-    </Button>
+    <div className="flex items-center space-x-2">
+      <Button
+        variant="outline"
+        size="sm"
+        onClick={handleExport}
+        disabled={loading || exporting || data.length === 0}
+        className="hover:scale-105 transition-transform duration-300"
+      >
+        {exporting ? (
+          <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+        ) : (
+          <Download className="w-4 h-4 mr-2" />
+        )}
+        {exporting ? 'Exporting...' : exportAll ? 'Export All' : 'Export CSV'}
+      </Button>
+    </div>
   );
 }

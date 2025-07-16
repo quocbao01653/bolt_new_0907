@@ -190,6 +190,8 @@ export default function AdminOrdersPage() {
           data={orders}
           formatData={formatDataForExport.orders}
           loading={loading}
+          exportAll={true}
+          exportType="orders"
         />
       </div>
 

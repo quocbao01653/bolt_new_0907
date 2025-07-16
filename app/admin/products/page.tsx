@@ -287,6 +287,8 @@ export default function AdminProductsPage() {
             data={products}
             formatData={formatDataForExport.products}
             loading={loading}
+            exportAll={true}
+            exportType="products"
           />
           <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogTrigger asChild>
