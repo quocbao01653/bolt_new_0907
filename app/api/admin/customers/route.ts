@@ -42,7 +42,15 @@ export async function GET() {
       },
     });
 
-    return NextResponse.json(customers);
+    return NextResponse.json({
+      customers,
+      pagination: {
+        page: 1,
+        limit: customers.length,
+        total: customers.length,
+        pages: 1,
+      },
+    });
   } catch (error) {
     console.error('Error fetching customers:', error);
     return NextResponse.json(

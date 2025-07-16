@@ -61,7 +61,7 @@ export default function AdminCustomersPage() {
       const response = await fetch('/api/admin/customers');
       if (response.ok) {
         const data = await response.json();
-        setCustomers(data);
+        setCustomers(data.customers || data);
       } else {
         toast({
           title: "Error",

@@ -35,7 +35,6 @@ export const exportToCSV = (data: ExportData) => {
 export const exportAllData = {
   products: async () => {
     try {
-      // Fetch all products without pagination by making multiple requests if needed
       let allProducts: any[] = [];
       let page = 1;
       let hasMore = true;
@@ -43,6 +42,9 @@ export const exportAllData = {
       
       while (hasMore) {
         const response = await fetch(`/api/products?page=${page}&limit=${limit}`);
+        if (!response.ok) {
+          throw new Error(`Failed to fetch products: ${response.status}`);
+        }
         const data = await response.json();
         
         if (data.products && data.products.length > 0) {
@@ -53,8 +55,6 @@ export const exportAllData = {
           hasMore = false;
         }
       }
-      
-      const data = await response.json();
       
       return {
         headers: ['Name', 'SKU', 'Category', 'Price', 'Compare Price', 'Stock', 'Status', 'Featured', 'Average Rating', 'Review Count', 'Created Date'],
@@ -82,7 +82,6 @@ export const exportAllData = {
   
   customers: async () => {
     try {
-      // Fetch all customers without pagination
       let allCustomers: any[] = [];
       let page = 1;
       let hasMore = true;
@@ -90,18 +89,24 @@ export const exportAllData = {
       
       while (hasMore) {
         const response = await fetch(`/api/admin/customers?page=${page}&limit=${limit}`);
+        if (!response.ok) {
+          throw new Error(`Failed to fetch customers: ${response.status}`);
+        }
         const data = await response.json();
         
-        if (data && data.length > 0) {
+        if (data.customers && data.customers.length > 0) {
+          allCustomers = [...allCustomers, ...data.customers];
+          hasMore = data.pagination.page < data.pagination.pages;
+          page++;
+        } else if (data && Array.isArray(data) && data.length > 0) {
+          // Fallback for direct array response
           allCustomers = [...allCustomers, ...data];
-          // For customers endpoint, check if we got less than limit (means we're done)
           hasMore = data.length === limit;
           page++;
         } else {
           hasMore = false;
         }
       }
-      const data = await response.json();
       
       return {
         headers: ['Name', 'Email', 'Role', 'Total Orders', 'Total Spent', 'Email Verified', 'Join Date'],
@@ -125,7 +130,6 @@ export const exportAllData = {
   
   orders: async () => {
     try {
-      // Fetch all orders without pagination
       let allOrders: any[] = [];
       let page = 1;
       let hasMore = true;
@@ -133,6 +137,9 @@ export const exportAllData = {
       
       while (hasMore) {
         const response = await fetch(`/api/admin/orders?page=${page}&limit=${limit}`);
+        if (!response.ok) {
+          throw new Error(`Failed to fetch orders: ${response.status}`);
+        }
         const data = await response.json();
         
         if (data.orders && data.orders.length > 0) {
@@ -143,7 +150,6 @@ export const exportAllData = {
           hasMore = false;
         }
       }
-      const data = await response.json();
       
       return {
         headers: ['Order Number', 'Customer Name', 'Customer Email', 'Items Count', 'Subtotal', 'Tax', 'Shipping', 'Total', 'Status', 'Payment Method', 'Order Date'],

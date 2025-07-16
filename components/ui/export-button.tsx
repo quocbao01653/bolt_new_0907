@@ -8,8 +8,8 @@ import { useToast } from '@/hooks/use-toast';
 
 interface ExportButtonProps {
   data: any[];
-  formatData: (data: any[]) => any;
-  loading: boolean;
+  formatData: (data: any[]) => { headers: string[]; rows: (string | number)[][]; filename: string };
+  loading?: boolean;
   exportAll?: boolean;
   exportType?: 'products' | 'customers' | 'orders';
 }
@@ -17,21 +17,21 @@ interface ExportButtonProps {
 export default function ExportButton({ 
   data, 
   formatData, 
-  loading, 
+  loading = false, 
   exportAll = false,
-  exportType = 'products'
+  exportType 
 }: ExportButtonProps) {
   const [exporting, setExporting] = useState(false);
   const { toast } = useToast();
 
   const handleExport = async () => {
-    if (loading) return;
-    
+    if (loading || exporting) return;
+
     setExporting(true);
     try {
       let exportData;
-      
-      if (exportAll) {
+
+      if (exportAll && exportType) {
         // Export all data by fetching from API
         switch (exportType) {
           case 'products':
@@ -44,24 +44,33 @@ export default function ExportButton({
             exportData = await exportAllData.orders();
             break;
           default:
-            exportData = formatData(data);
+            throw new Error('Invalid export type');
         }
       } else {
         // Export current page data
         exportData = formatData(data);
       }
-      
-      exportToCSV(exportData);
-      
-      toast({
-        title: "Export successful",
-        description: `${exportAll ? 'All' : 'Current page'} data exported to CSV file.`,
+
+      if (!exportData || !exportData.headers || !exportData.rows) {
+        throw new Error('Invalid export data format');
+      }
+
+      exportToCSV({
+        headers: exportData.headers,
+        rows: exportData.rows,
+        filename: exportData.filename,
+        title: exportData.title || 'Export'
       });
-    } catch (error) {
+
+      toast({
+        title: "Success",
+        description: `${exportAll ? 'All data' : 'Current page'} exported successfully`,
+      });
+    } catch (error: any) {
       console.error('Export error:', error);
       toast({
-        title: "Export failed",
-        description: "Failed to export data. Please try again.",
+        title: "Export Failed",
+        description: error.message || "Failed to export data. Please try again.",
         variant: "destructive",
       });
     } finally {
@@ -70,21 +79,19 @@ export default function ExportButton({
   };
 
   return (
-    <div className="flex items-center space-x-2">
-      <Button
-        variant="outline"
-        size="sm"
-        onClick={handleExport}
-        disabled={loading || exporting || data.length === 0}
-        className="hover:scale-105 transition-transform duration-300"
-      >
-        {exporting ? (
-          <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-        ) : (
-          <Download className="w-4 h-4 mr-2" />
-        )}
-        {exporting ? 'Exporting...' : exportAll ? 'Export All' : 'Export CSV'}
-      </Button>
-    </div>
+    <Button
+      variant="outline"
+      size="sm"
+      onClick={handleExport}
+      disabled={loading || exporting || data.length === 0}
+      className="hover:scale-105 transition-transform duration-300"
+    >
+      {exporting ? (
+        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+      ) : (
+        <Download className="w-4 h-4 mr-2" />
+      )}
+      {exporting ? 'Exporting...' : exportAll ? 'Export All' : 'Export CSV'}
+    </Button>
   );
 }
